@@ -2,6 +2,7 @@ import hashlib
 import json
 from time import time
 from flask import Flask, jsonify
+from flask_cors import CORS  # இதைச் சேர்த்துள்ளோம்
 
 class Blockchain:
     def __init__(self):
@@ -27,6 +28,7 @@ class Blockchain:
         return hashlib.sha256(block_string).hexdigest()
 
 app = Flask(__name__)
+CORS(app) # இதுதான் MeDo ஆப்-ஐ உங்கள் சர்வருடன் பேச அனுமதிக்கும்
 blockchain = Blockchain()
 
 @app.route('/chain', methods=['GET'])
