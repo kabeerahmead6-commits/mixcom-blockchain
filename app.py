@@ -1,7 +1,7 @@
 import hashlib
 import json
 from time import time
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 
 class Blockchain:
     def __init__(self):
@@ -32,6 +32,14 @@ blockchain = Blockchain()
 @app.route('/chain', methods=['GET'])
 def full_chain():
     return jsonify({'chain': blockchain.chain, 'length': len(blockchain.chain)}), 200
+
+@app.route('/mine', methods=['GET'])
+def mine():
+    last_block = blockchain.chain[-1]
+    proof = last_block['proof'] + 1
+    previous_hash = blockchain.hash(last_block)
+    block = blockchain.new_block(proof, previous_hash)
+    return jsonify(block), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
